@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leslie Vanegas | A Collection of Curious Things</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+:root{
+  --plum:#260c3a; --plum-deep:#1a0829; --burgundy:#50001a; --wine:#6b0f2a;
+  --cream:#e8dcc8; --paper:#f1e8d6; --ink:#1c1018; --gold:#c9963f; --tan:#c9ab80;
+  --serif:"Cormorant Garamond",Georgia,serif; --type:"Special Elite","Courier New",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--type);background:var(--plum);color:var(--cream);line-height:1.7;overflow-x:hidden}
+body.locked{overflow:hidden;height:100vh}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+.skip-link{position:absolute;left:0;top:-48px;background:var(--gold);color:#000;padding:8px 14px;z-index:3000;font-weight:bold}
+.skip-link:focus{top:0}
+
+/* ========== INTRO: THE BOX ========== */
+#intro{position:fixed;inset:0;z-index:2000;display:grid;place-items:center;
+  background:radial-gradient(ellipse at 50% 55%,#5a0f35 0%,#2a0d40 55%,#1b0a2e 100%);
+  transition:opacity 1.1s ease,visibility 1.1s}
+#intro.done{opacity:0;visibility:hidden}
+.intro-kicker{position:absolute;top:18%;width:100%;text-align:center;font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;color:var(--cream);opacity:.8}
+.intro-name{position:absolute;top:20%;width:100%;text-align:center;font:500 clamp(3rem,9vw,7.5rem)/1 var(--serif);color:rgba(232,220,200,.14);pointer-events:none}
+.skip-intro{position:absolute;top:1.5rem;right:2rem;background:none;border:0;border-bottom:1px solid var(--cream);color:var(--cream);font:inherit;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;padding-bottom:2px}
+.open-cta{position:absolute;bottom:9%;background:none;border:0;color:var(--cream);font:inherit;font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;cursor:pointer}
+
+.box{position:relative;width:min(300px,64vw);aspect-ratio:1.45;cursor:pointer;border:0;background:none;filter:drop-shadow(0 30px 40px rgba(0,0,0,.55))}
+.hex{clip-path:polygon(18% 0,82% 0,100% 50%,82% 100%,18% 100%,0 50%)}
+.box-base{position:absolute;inset:0;background:linear-gradient(#3b0714,#1a0309)}
+.box-inner{position:absolute;inset:7%;background:radial-gradient(circle,#e0a05c 0%,#a85a30 55%,#6a2a22 100%);opacity:0;transition:opacity .8s .5s}
+.box-gold{position:absolute;left:8%;right:8%;bottom:0;height:5px;background:var(--gold);box-shadow:0 -9px 0 -1px #5a0a1d,0 -14px 0 -1px var(--gold)}
+.box-lid{position:absolute;inset:0;background:linear-gradient(#7d0c2a,#4c0618);transform-origin:50% 100%;transition:transform 1.4s cubic-bezier(.6,0,.2,1),opacity 1s .9s}
+.box-lid::before{content:"";position:absolute;inset:14%;background:var(--paper);clip-path:inherit}
+.box-lid::after{content:"";position:absolute;left:50%;top:50%;width:26%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#f7c36b,#b8721f 45%,#5a1a6e 70%);border:3px solid #7a35a8;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+#intro.open .box-lid{transform:translateY(-70%) scaleY(.22);opacity:0}
+#intro.open .box-inner{opacity:1}
+.fly{position:absolute;width:clamp(70px,11vw,130px);opacity:0;transform:translate(0,0) scale(.3) rotate(0);transition:transform 1.8s cubic-bezier(.2,.8,.2,1),opacity .8s}
+#intro.open .fly{opacity:1;transform:translate(var(--x),var(--y)) scale(1) rotate(var(--r))}
+.spark{position:absolute;color:var(--gold);font-size:1.4rem;animation:twinkle 2.4s infinite;opacity:0}
+#intro.open .spark{opacity:1}
+@keyframes twinkle{50%{transform:scale(1.4) rotate(20deg);opacity:.5}}
+
+/* ========== OBJECTS (swap for <img> with your own photos) ========== */
+.obj svg{width:100%;height:auto;display:block;filter:drop-shadow(0 8px 10px rgba(0,0,0,.35))}
+.tag{position:absolute;background:var(--paper);color:var(--ink);font-size:.62rem;padding:.2rem .6rem;border-bottom:3px solid var(--wine);box-shadow:0 3px 6px rgba(0,0,0,.25);white-space:nowrap;transform:rotate(-2deg)}
+
+/* ========== NAV ========== */
+nav{position:absolute;top:0;left:0;right:0;z-index:50;padding:1.2rem 2.5rem;display:flex;justify-content:space-between;align-items:center}
+.logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;color:var(--ink);font-size:.8rem}
+.logo i{width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f7c36b,#b8721f 45%,#5a1a6e 75%)}
+.nav-links{list-style:none;display:flex;gap:2rem}
+.nav-links a{text-decoration:none;color:var(--ink);font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;border-bottom:1px solid transparent;transition:border-color .3s}
+.nav-links a:hover{border-color:var(--wine)}
+.menu-toggle{display:none;background:none;border:0;font-size:1.5rem;color:var(--ink);cursor:pointer}
+
+/* ========== HERO ========== */
+.hero{position:relative;min-height:100vh;background:var(--cream);color:var(--ink);overflow:hidden;
+  background-image:linear-gradient(rgba(80,0,26,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(80,0,26,.06) 1px,transparent 1px);background-size:34px 34px}
+.hero-ghost{position:absolute;inset:0;display:grid;align-content:center;font:500 clamp(8rem,24vw,22rem)/.85 var(--serif);color:rgba(80,0,26,.07);letter-spacing:.02em;pointer-events:none;padding-left:2rem}
+.hero-ghost span:last-child{padding-left:30vw}
+.hero-copy{position:relative;z-index:2;padding:9rem 2.5rem 6rem;max-width:760px}
+.eyebrow{font-size:.68rem;letter-spacing:.3em;text-transform:uppercase;margin-bottom:1rem}
+h1{font:500 clamp(4rem,11vw,9rem)/.9 var(--serif);letter-spacing:-.02em}
+h1 em{display:block;color:var(--wine);font-weight:600;margin-left:.3em}
+.note{display:inline-block;margin-top:2rem;max-width:300px;background:var(--tan);padding:1.2rem 1.4rem;font-size:.82rem;transform:rotate(-1.5deg);box-shadow:0 8px 16px rgba(0,0,0,.2)}
+.follow{position:absolute;bottom:1.2rem;left:50%;transform:translateX(-50%);font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;text-align:center;text-decoration:none;color:var(--ink)}
+.hero .obj{position:absolute}
+.o-ticket{width:clamp(110px,15vw,190px);top:14%;left:56%;transform:rotate(-8deg)}
+.o-key{width:clamp(80px,11vw,140px);top:12%;right:5%;transform:rotate(14deg)}
+.o-horse{width:clamp(100px,13vw,170px);top:42%;left:54%;transform:rotate(3deg)}
+.o-fortune{width:clamp(130px,17vw,220px);bottom:6%;right:8%;transform:rotate(-4deg)}
+.o-ticket .tag{left:50%;top:92%}.o-horse .tag{left:20%;top:88%}.o-fortune .tag{left:0;top:88%}.o-key .tag{display:none}
+.hero .obj{animation:bob 7s ease-in-out infinite}
+.o-key{animation-delay:-2s!important}.o-horse{animation-delay:-4s!important}.o-fortune{animation-delay:-1s!important}
+@keyframes bob{50%{translate:0 -8px}}
+
+/* ========== MARQUEE ========== */
+.marquee{background:var(--burgundy);border-top:3px solid var(--gold);border-bottom:3px solid var(--gold);padding:.6rem 0;overflow:hidden;white-space:nowrap;font-size:.75rem;letter-spacing:.25em;text-transform:uppercase}
+.marquee div{display:inline-block;animation:slide 30s linear infinite}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* ========== WORK ========== */
+main section{max-width:none}
+#work{background:var(--plum);padding:7rem 2rem 4rem}
+.work-head{max-width:1100px;margin:0 auto 5rem;display:grid;grid-template-columns:1fr 2fr;gap:2rem;align-items:end}
+.work-head p{font-size:.7rem;letter-spacing:.25em;text-transform:uppercase}
+h2{font:500 clamp(2.8rem,7vw,5.5rem)/.95 var(--serif);color:var(--cream)}
+h2 em{color:var(--gold)}
+.piece{max-width:1100px;margin:0 auto 6rem;display:grid;grid-template-columns:1.1fr 1fr;gap:4rem;align-items:center}
+.piece:nth-child(odd) .photo{order:2}
+.piece .meta{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--tan)}
+.piece h3{font:500 clamp(2.4rem,5vw,4rem)/1 var(--serif);margin:.8rem 0 1rem}
+.piece p{font-size:.82rem;max-width:34ch;margin-bottom:1.2rem}
+.piece a{color:var(--gold);font-size:.75rem;text-decoration:none;border-bottom:1px solid var(--gold)}
+.photo{position:relative;background:var(--paper);padding:14px 14px 38px;box-shadow:0 20px 40px rgba(0,0,0,.45);transition:transform .5s}
+.photo::before{content:"";position:absolute;top:-14px;left:50%;width:90px;height:26px;transform:translateX(-50%);background:rgba(201,150,63,.8)}
+.photo .frame{background:linear-gradient(#d4b48a,#c49d6e);aspect-ratio:4/3;display:grid;place-items:center;overflow:hidden}
+.photo .frame img{width:100%;height:100%;object-fit:cover}
+.piece:nth-child(odd) .photo{transform:rotate(3deg)}.piece:nth-child(even) .photo{transform:rotate(-3deg)}
+.piece .photo:hover{transform:rotate(0) scale(1.02)}
+.frame svg{width:46%}
+
+/* ========== NOTE / ABOUT ========== */
+#about{background:var(--cream);color:var(--ink);padding:7rem 2rem}
+.about-in{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1.3fr;gap:3rem;align-items:center}
+.pile{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;font-size:2.4rem;text-align:center;opacity:.9}
+.about-in h2{color:var(--ink)}.about-in h2 em{color:var(--wine)}
+.about-in p{font-size:.85rem;margin:1.2rem 0;max-width:46ch}
+.eyebrow.sm{color:var(--wine)}
+.skill{display:inline-block;padding:.3rem .9rem;margin:.3rem .4rem 0 0;border:1px solid var(--wine);color:var(--wine);font-size:.72rem;transition:background .3s,color .3s}
+.skill:hover{background:var(--wine);color:var(--cream)}
+.headshot{width:150px;height:150px;border-radius:50%;object-fit:cover;border:4px solid var(--paper);box-shadow:0 8px 20px rgba(0,0,0,.25);transform:rotate(-4deg);margin-bottom:1.2rem}
+
+/* ========== CONTACT ========== */
+#contact{background:var(--burgundy);text-align:center;padding:9rem 2rem 5rem}
+#contact h2 em{display:block}
+.start{display:inline-flex;gap:.7rem;margin-top:2.5rem;padding:.9rem 1.8rem;border:1px solid var(--gold);color:var(--gold);text-decoration:none;font-size:.82rem;transition:background .3s,color .3s}
+.start:hover{background:var(--gold);color:var(--burgundy)}
+.links{margin-top:3rem;display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;font-size:.75rem}
+.links a{color:var(--cream)}
+
+footer{background:#2d0010;text-align:center;padding:1.6rem;font-size:.7rem;color:var(--tan)}
+
+@media (max-width:768px){
+  nav{padding:1rem 1.2rem}
+  .nav-links{display:none;flex-direction:column;gap:1rem;position:absolute;top:60px;right:16px;background:var(--paper);padding:1.2rem 1.6rem;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+  .nav-links.active{display:flex}.menu-toggle{display:block}
+  .hero-copy{padding:7rem 1.2rem 4rem}
+  .o-ticket{top:auto;bottom:34%;left:6%}.o-key{top:9%}.o-horse{top:auto;bottom:6%;left:40%}.o-fortune{bottom:12%;right:2%;width:120px}
+  .work-head,.piece,.about-in{grid-template-columns:1fr}
+  .piece:nth-child(odd) .photo{order:0}
+  .fly{--x:calc(var(--x)*.5)}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body class="locked">
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<!-- INTRO -->
+<div id="intro" role="dialog" aria-label="Opening animation">
+  <button class="skip-intro" id="skip">Skip intro</button>
+  <p class="intro-kicker">A collection of curious things by</p>
+  <p class="intro-name" aria-hidden="true">Leslie Vanegas</p>
+
+  <!-- flying curiosities: replace SVGs with <img> if you have object photos -->
+  <div class="fly obj" style="--x:-34vw;--y:22vh;--r:-12deg"><svg viewBox="0 0 100 60"><rect width="100" height="60" rx="4" fill="#a3202f"/><circle cx="50" cy="30" r="14" fill="#e8dcc8"/></svg></div>
+  <div class="fly obj" style="--x:-26vw;--y:14vh;--r:20deg"><svg viewBox="0 0 60 80"><circle cx="30" cy="16" r="14" fill="none" stroke="#b08a3a" stroke-width="7"/><rect x="26" y="28" width="8" height="50" fill="#b08a3a"/></svg></div>
+  <div class="fly obj" style="--x:30vw;--y:18vh;--r:10deg"><svg viewBox="0 0 80 80"><polygon points="40,5 75,40 40,75 5,40" fill="#e8dcc8" stroke="#8b2230" stroke-width="3"/></svg></div>
+  <span class="spark" style="left:38%;top:70%">✦</span>
+
+  <button class="box" id="box" aria-label="Open the box">
+    <span class="box-base hex"></span><span class="box-inner hex"></span><span class="box-gold hex"></span>
+    <span class="box-lid hex"></span>
+  </button>
+  <button class="open-cta" id="open">✧ Open the box ✧</button>
+</div>
+
+<header class="hero" id="top">
+  <nav aria-label="Primary Navigation">
+    <a href="#top" class="logo"><i></i>LV</a>
+    <button class="menu-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Menu">☰</button>
+    <ul class="nav-links" id="nav-menu">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#resume">Resume</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+  <div class="hero-ghost" aria-hidden="true"><span>LESLIE</span><span>VANEGAS</span></div>
+
+  <div class="hero-copy" id="main-content">
+    <p class="eyebrow">Designer · Storyteller · Maker of worlds</p>
+    <h1>Leslie <em>Vanegas</em></h1>
+    <p class="note">I turn curious ideas into tactile stories, memorable identities, and little worlds you can get lost in.<!-- replace with your professional summary --></p>
+  </div>
+
+  <div class="obj o-ticket"><svg viewBox="0 0 100 60"><rect width="100" height="60" rx="4" fill="#a3202f"/><rect x="6" y="6" width="88" height="48" fill="none" stroke="#e8dcc8" stroke-dasharray="3 2"/><polygon points="50,14 70,38 30,38" fill="#e8dcc8"/></svg><span class="tag">01 Midnight Revelry</span></div>
+  <div class="obj o-key"><svg viewBox="0 0 60 110"><circle cx="16" cy="16" r="12" fill="#8a6a2e"/><circle cx="44" cy="16" r="12" fill="#8a6a2e"/><circle cx="16" cy="16" r="5" fill="#e8dcc8"/><circle cx="44" cy="16" r="5" fill="#e8dcc8"/><rect x="22" y="10" width="16" height="30" fill="#a8863e"/><rect x="26" y="40" width="8" height="66" fill="#8a6a2e"/></svg><span class="tag">02 The Turning Key</span></div>
+  <div class="obj o-horse"><svg viewBox="0 0 80 120"><rect x="38" y="0" width="4" height="120" fill="#b08a3a"/><ellipse cx="40" cy="58" rx="30" ry="18" fill="#d9c7a6"/><circle cx="62" cy="40" r="10" fill="#d9c7a6"/><rect x="20" y="70" width="5" height="26" fill="#a3202f"/><rect x="52" y="70" width="5" height="26" fill="#a3202f"/></svg><span class="tag">03 Carousel Dreams</span></div>
+  <div class="obj o-fortune"><svg viewBox="0 0 100 90"><polygon points="50,5 95,45 50,85 5,45" fill="#f1e8d6" stroke="#a3202f" stroke-width="3"/><polygon points="50,25 70,45 50,65 30,45" fill="#a3202f"/><circle cx="50" cy="45" r="8" fill="#c9963f"/></svg><span class="tag">04 Paper Prophecies</span></div>
+
+  <a class="follow" href="#work">Follow the threads<br>↓</a>
+</header>
+
+<div class="marquee" aria-hidden="true"><div>&nbsp;Brand worlds ◆ Storytelling ◆ Object making ◆ Art direction ◆ Brand worlds ◆ Storytelling ◆ Object making ◆ Art direction ◆ Brand worlds ◆ Storytelling ◆ Object making ◆ Art direction ◆ Brand worlds ◆ Storytelling ◆ Object making ◆ Art direction ◆ </div></div>
+
+<main>
+<section id="work">
+  <div class="work-head">
+    <p>Selected curiosities</p>
+    <h2>Things I’ve brought to <em>life.</em></h2>
+  </div>
+
+  <!-- To use real photos: put <img src="your.jpg" alt="..."> inside .frame and delete the svg -->
+  <article class="piece">
+    <div><p class="meta">01 / 04 · Art direction · Campaign</p><h3>Midnight Revelry</h3><p>A nocturnal world built from miniature sets, theatrical light, and a little mischief.</p><a href="#">Turn the page ↗</a></div>
+    <div class="photo"><div class="frame"><svg viewBox="0 0 100 60"><polygon points="10,55 50,10 90,55" fill="#7a2a1c"/><circle cx="82" cy="12" r="7" fill="#9fc4b8"/></svg></div></div>
+  </article>
+  <article class="piece">
+    <div><p class="meta">02 / 04 · Identity · Editorial</p><h3>The Turning Key</h3><p>A visual identity that rewards curiosity through hidden marks and unfolding details.</p><a href="#">Turn the page ↗</a></div>
+    <div class="photo"><div class="frame"><svg viewBox="0 0 60 110"><circle cx="16" cy="16" r="12" fill="#8a6a2e"/><circle cx="44" cy="16" r="12" fill="#8a6a2e"/><rect x="22" y="10" width="16" height="30" fill="#a8863e"/><rect x="26" y="40" width="8" height="66" fill="#8a6a2e"/></svg></div></div>
+  </article>
+  <article class="piece">
+    <div><p class="meta">03 / 04 · Object · Experience</p><h3>Carousel Dreams</h3><p>A tactile experience inspired by heirlooms, fairground music, and things that move by hand.</p><a href="#">Turn the page ↗</a></div>
+    <div class="photo"><div class="frame"><svg viewBox="0 0 80 120"><rect x="38" y="0" width="4" height="120" fill="#b08a3a"/><ellipse cx="40" cy="58" rx="30" ry="18" fill="#f1e8d6"/><circle cx="62" cy="40" r="10" fill="#f1e8d6"/></svg></div></div>
+  </article>
+  <article class="piece">
+    <div><p class="meta">04 / 04 · Storytelling · Print</p><h3>Paper Prophecies</h3><p>An interactive paper story where every fold reveals a new route through the narrative.</p><a href="#">Turn the page ↗</a></div>
+    <div class="photo"><div class="frame"><svg viewBox="0 0 100 90"><polygon points="50,5 95,45 50,85 5,45" fill="#f1e8d6" stroke="#a3202f" stroke-width="3"/><circle cx="50" cy="45" r="10" fill="#c9963f"/></svg></div></div>
+  </article>
+</section>
+
+<section id="about">
+  <div class="about-in">
+    <div class="pile" aria-hidden="true"><span>🌺</span><span>🔘</span><span>✦</span><span>🪡</span><span>🌿</span><span>🎭</span></div>
+    <div>
+      <img class="headshot" src="headshot.jpg" alt="Professional headshot of Leslie Vanegas">
+      <p class="eyebrow sm">A note from Leslie</p>
+      <h2>I like ideas with <em>a pulse.</em></h2>
+      <p>I’m a multidisciplinary creative drawn to the handmade, the theatrical, and the unexpected. My practice moves between visual identity, art direction, objects, and stories—always looking for the detail that makes something feel alive.</p>
+      <div aria-label="Skills"><span class="skill">Python</span><span class="skill">HTML</span><span class="skill">CSS</span><span class="skill">JavaScript</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="resume" style="background:var(--plum-deep);padding:4rem 2rem;text-align:center">
+  <a class="start" href="https://docs.google.com/document/d/1aR-CSxSezK-2CWR8NSB8y9-f1PUcLCT34C16tHjy0GI/edit?usp=drive_link" target="_blank" rel="noopener">View resume ↗</a>
+</section>
+
+<section id="contact">
+  <p class="eyebrow">Have a curious idea?</p>
+  <h2>Let’s make <em>something strange.</em></h2>
+  <a class="start" href="mailto:lav6879@nyu.edu">✉ Start a conversation ↗</a>
+  <div class="links">
+    <a href="https://github.com/lav6879" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://www.linkedin.com/in/leslie-vanegas-131a8b285/" target="_blank" rel="noopener">LinkedIn</a>
+  </div>
+</section>
+</main>
+
+<footer><p>© 2026 Leslie Vanegas. All rights reserved.</p></footer>
+
+<script>
+const intro=document.getElementById('intro');
+let opened=false;
+function finish(){intro.classList.add('done');document.body.classList.remove('locked');}
+function openBox(){
+  if(opened)return;opened=true;intro.classList.add('open');
+  setTimeout(finish,3600);
+}
+document.getElementById('box').onclick=openBox;
+document.getElementById('open').onclick=openBox;
+document.getElementById('skip').onclick=finish;
+setTimeout(openBox,1800); // auto-opens like the recording
+
+const toggle=document.querySelector('.menu-toggle'),nav=document.querySelector('.nav-links');
+toggle.addEventListener('click',()=>{
+  const ex=toggle.getAttribute('aria-expanded')==='true';
+  toggle.setAttribute('aria-expanded',!ex);nav.classList.toggle('active');
+});
+nav.addEventListener('click',e=>{if(e.target.tagName==='A'){nav.classList.remove('active');toggle.setAttribute('aria-expanded','false')}});
+</script>
+</body>
+</html>
